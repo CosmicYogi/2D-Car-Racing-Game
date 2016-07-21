@@ -5,9 +5,12 @@ public class CarController : MonoBehaviour {
 
 	public float speed;
 	public float maxPosition = 2.4f;
-	Vector2 position;
+
+	private UIManager UIM;
+	private Vector2 position;
 	// Use this for initialization
 	void Start () {
+		UIM = GameObject.FindObjectOfType<UIManager> ();
 		position = new Vector2 (transform.position.x, transform.position.y);
 	}
 	
@@ -23,6 +26,7 @@ public class CarController : MonoBehaviour {
 		GameObject collidingCar = coll.gameObject as GameObject;
 		if (collidingCar.GetComponent<EnemyCar> ()) {
 			print ("Collided with Enemy car " + collidingCar.name);
+			UIM.GameIsOver ();
 			Destroy (gameObject);
 		}
 	}
