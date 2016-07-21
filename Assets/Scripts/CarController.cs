@@ -17,4 +17,13 @@ public class CarController : MonoBehaviour {
 		position.x = Mathf.Clamp (position.x, -maxPosition, maxPosition);
 		transform.position = new Vector2 (position.x, position.y);
 	}
+
+	void OnCollisionEnter2D(Collision2D coll){
+		print ("collision happened");
+		GameObject collidingCar = coll.gameObject as GameObject;
+		if (collidingCar.GetComponent<EnemyCar> ()) {
+			print ("Collided with Enemy car " + collidingCar.name);
+			Destroy (gameObject);
+		}
+	}
 }
