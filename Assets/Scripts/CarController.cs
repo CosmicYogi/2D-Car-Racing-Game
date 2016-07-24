@@ -14,6 +14,7 @@ public class CarController : MonoBehaviour {
 	private Rigidbody2D rb2D;
 	// Use this for initialization
 	void Start () {
+		print (PlayerPrefsManager.GetInputMethodOnTouchScreenMobileDevice ());
 		if (currentPlatform == platform.IOS) {
 			print ("Current platform IOS");
 		} else if (currentPlatform == platform.Android) {
@@ -21,6 +22,7 @@ public class CarController : MonoBehaviour {
 		} else {
 			print ("Current platform is Default A.K.A Desktop");
 		}
+
 		rb2D = GetComponent<Rigidbody2D> ();
 		UIM = GameObject.FindObjectOfType<UIManager> ();
 		position = new Vector2 (transform.position.x, transform.position.y);
@@ -29,8 +31,15 @@ public class CarController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (currentPlatform == platform.IOS || currentPlatform == platform.Android) {
-			MoveOnTouch ();
-			MoveOnAcclerometer ();
+			if (PlayerPrefsManager.GetInputMethodOnTouchScreenMobileDevice () == "buttons") {
+				MoveOnTouch ();
+			} else if (PlayerPrefsManager.GetInputMethodOnTouchScreenMobileDevice () == "acclerometer") {
+				MoveOnAcclerometer ();
+			} else {
+				//Would be working with both, This is because it's kind of a practice game. and TIME is very precious.
+				MoveOnTouch();
+				MoveOnAcclerometer ();
+			}
 		} else {
 			position.x += Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
 

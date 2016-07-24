@@ -38,7 +38,9 @@ public class UIManager : MonoBehaviour {
 			btn.gameObject.SetActive (true);
 		}
 	}
-
+	public void LoadLevel(string level){
+		UnityEngine.SceneManagement.SceneManager.LoadScene (level);
+	}
 	public void LoadNextLevel(){
 		UnityEngine.SceneManagement.SceneManager.LoadScene (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().buildIndex + 1);
 	}
