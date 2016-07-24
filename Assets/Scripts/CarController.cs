@@ -28,9 +28,9 @@ public class CarController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		if (currentPlatform == platform.IOS) {
-			//IOS shit
+		if (currentPlatform == platform.IOS || currentPlatform == platform.Android) {
+			MoveOnTouch ();
+			MoveOnAcclerometer ();
 		} else {
 			position.x += Input.GetAxis ("Horizontal") * speed * Time.deltaTime;
 
@@ -48,6 +48,33 @@ public class CarController : MonoBehaviour {
 	}
 	public void SetVelocityZero(){
 		rb2D.velocity = Vector2.zero;
+	}
+	void MoveOnTouch(){
+		if (Input.touchCount > 0) {
+			Touch touch = Input.GetTouch (0);
+			float middleX = Screen.width / 2;
+
+			if (touch.position.x < middleX && (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)) {
+				MoveLeft ();
+			} else if (touch.position.x > middleX && (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)) {
+				MoveRight ();
+			} 
+		} else {
+			SetVelocityZero ();
+		}
+	}
+
+	void MoveOnAcclerometer(){
+		float accleratoInput = Input.acceleration.x;
+		print (accleratoInput);
+		if (accleratoInput < -0.1f) {
+			MoveLeft ();
+		} else if (accleratoInput > 0.1f) {
+			MoveRight ();
+		} else {
+			SetVelocityZero ();
+		}
+
 	}
 	void Awake(){
 		#if UNITY_IPHONE
